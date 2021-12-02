@@ -3,7 +3,7 @@
 
 using namespace std;
 
-void firstQ(int* dataArr ) {
+void firstQ(int* dataArr) {
 	ifstream textFile;
 	//textFile.open("debug_values.txt");
 	textFile.open("values.txt");
@@ -50,9 +50,44 @@ void secondQ(int* arr) {
 	cout << counter << endl;
 }
 
+int thirdQ() {
+	ifstream textFile;
+	//textFile.open("debug_values.txt");
+	textFile.open("instructions.txt");
+	int xPos = 0;
+	int yPos = 0;
+
+	for (int i = 0; i < 1000; i++) {
+		char data[9] = { 0,0,0,0,0,0,0,0,0 };
+		textFile >> data;
+		char data2[9] = { 0,0,0,0,0,0,0,0,0 };
+		switch (data[0])
+		{
+		case 'f':
+			textFile >> data2;
+			xPos += (data2[0] - 0x30);
+			break;
+		case 'u':
+			textFile >> data2;
+			yPos -= (data2[0] - 0x30);
+			break;
+		case 'd':
+			textFile >> data2;
+			yPos += (data2[0] - 0x30);
+			break;
+		}
+	}
+	textFile.close();
+	cout << "xPos: " << xPos << endl;
+	cout << "yPos: " << yPos << endl;
+
+	return xPos * yPos;
+}
+
 int main() {
 	int dataArr[2000];
+	int instructionArr[1000];
 	firstQ(dataArr);
 	secondQ(dataArr);
-
+	cout << "total: " << thirdQ();
 }
