@@ -56,6 +56,7 @@ int thirdQ() {
 	textFile.open("instructions.txt");
 	int xPos = 0;
 	int yPos = 0;
+	int aim = 0;
 
 	for (int i = 0; i < 1000; i++) {
 		char data[9] = { 0,0,0,0,0,0,0,0,0 };
@@ -66,14 +67,15 @@ int thirdQ() {
 		case 'f':
 			textFile >> data2;
 			xPos += (data2[0] - 0x30);
+			yPos += (data2[0] - 0x30) * aim;
 			break;
 		case 'u':
 			textFile >> data2;
-			yPos -= (data2[0] - 0x30);
+			aim -= (data2[0] - 0x30);
 			break;
 		case 'd':
 			textFile >> data2;
-			yPos += (data2[0] - 0x30);
+			aim += (data2[0] - 0x30);
 			break;
 		}
 	}
