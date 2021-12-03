@@ -86,10 +86,54 @@ int thirdQ() {
 	return xPos * yPos;
 }
 
+int fourthQ() {
+	ifstream textFile;
+	//textFile.open("debug_values.txt");
+	textFile.open("binary.txt");
+	uint16_t binArr[1000];
+	for (int i = 0; i < 1000; i++) {
+		uint16_t toBinary = 0;
+		for (int j = 0; j < 12; j++) {
+			char a;
+			textFile >> a;
+			toBinary |= ((a - 0x30) << (15 - j));
+		}
+		binArr[i] = toBinary;
+	}
+	textFile.close();
+	for (int i = 0; i < 1000; i++) {
+		for (int j = 0; j < 16; j++) {
+			cout << ((binArr[i] & (0x8000 >> j)) >> (15 - j));
+		}
+		cout << endl;
+	}
+	uint16_t gamma = 0;
+	for (int i = 0; i < 12; i++) {
+		int counter = 0;
+		for (int j = 0; j < 1000; j++) {
+			counter += (binArr[j] & (1 << (15 - i))) != 0;
+		}
+		gamma |= ((counter > 500) << (15 - i));
+	}
+	gamma = gamma >> 4;
+	uint16_t epsilon = (~gamma) & 0xFFF;
+
+	for (int j = 0; j < 16; j++) {
+		cout << ((gamma & (0x8000 >> j)) >> (15 - j));
+	}
+	cout << endl;
+
+	cout << "Gamma: " << gamma << endl;
+	cout << "Epsilon: " << epsilon << endl;
+
+	return gamma * epsilon;
+}
+
 int main() {
 	int dataArr[2000];
 	int instructionArr[1000];
-	firstQ(dataArr);
-	secondQ(dataArr);
-	cout << "total: " << thirdQ();
+	//firstQ(dataArr);
+	//secondQ(dataArr);
+	//cout << "total: " << thirdQ();
+	cout << "Power Consumption: " << fourthQ();
 }
